@@ -1,0 +1,14 @@
+example.like.userAgent:
+  local: false
+  defaultSutWaitInSeconds: 5
+  agents:
+    - device:
+        type: custom
+        version: android
+      os:
+        type: ~
+        version: android
+    - device:
+        type: desktop
+        version: windows
+
