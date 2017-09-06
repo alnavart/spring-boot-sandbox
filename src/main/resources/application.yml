@@ -25,3 +25,18 @@ example.like.userAgent:
         type: ${agent-1.device.type}
         version:  ${agent-1.device.version}
 
+example.like.userAgentAlternative:
+  local: false
+  defaultSutWaitInSeconds: 5
+  agents:
+    agent0:
+      device:
+        type: custom
+        version: android
+      os:
+        type: ~
+        version: android
+    agent1:
+      device:
+        type: desktop
+        version: windows

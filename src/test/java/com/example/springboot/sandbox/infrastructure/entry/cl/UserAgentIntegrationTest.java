@@ -27,6 +27,6 @@ public class UserAgentIntegrationTest {
         assertThat(userAgent, equalTo(expectedUserAgent));
     }
 
-    private Agent androidAgent = new Agent(new Device("custom", "android"), new Os("", "android"));
-    private Agent desktopAgent = new Agent(new Device("desktop", "windows"), null);
+    private final Agent androidAgent = new Agent(new Device("custom", "android"), new Os("", "android"));
+    private final Agent desktopAgent = new Agent(new Device("desktop", "windows"), null);
 }

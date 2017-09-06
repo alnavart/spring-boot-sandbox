@@ -32,6 +32,6 @@ public class UserAgentOverrideIssueIntegrationTest {
         assertThat(userAgent.agents.size(), equalTo(1));
     }
 
-    private Agent androidAgent = new Agent(new Device("custom", "androide"), new Os("", "android"));
-    private Agent desktopAgent = new Agent(new Device("desktop", "windows"), null);
+    private final Agent androidAgent = new Agent(new Device("custom", "androide"), new Os("", "android"));
+    private final Agent desktopAgent = new Agent(new Device("desktop", "windows"), null);
 }
