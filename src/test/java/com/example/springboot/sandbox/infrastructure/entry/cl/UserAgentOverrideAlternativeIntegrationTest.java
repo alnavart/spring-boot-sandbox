@@ -7,29 +7,26 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 
-@ActiveProfiles("override-issue")
+@ActiveProfiles("override-alternative")
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserAgentOverrideIssueIntegrationTest {
+public class UserAgentOverrideAlternativeIntegrationTest {
 
     @Autowired
     UserAgent userAgent;
 
     @Test
-    public void overrideSingleElementOverridesAllTheList(){
-        List<Agent> expectedAgents = new ArrayList<>(asList(androidAgent, desktopAgent));
+    public void overrideByReferencedProperties(){
+        List<Agent> expectedAgents = asList(androidAgent, desktopAgent);
         UserAgent expectedUserAgent = new UserAgent(false, 5, expectedAgents);
 
-        assertThat(userAgent, not(equalTo(expectedUserAgent)));
-        assertThat(userAgent.agents.size(), equalTo(1));
+        assertThat(userAgent, equalTo(expectedUserAgent));
     }
 
     private Agent androidAgent = new Agent(new Device("custom", "androide"), new Os("", "android"));
