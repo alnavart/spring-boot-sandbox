@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/DECORATION/1.7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 http://maven.apache.org/xsd/decoration-1.7.0.xsd"
+         name="sample name" >
+    <bannerLeft>
+        <name>${project.name}</name>
+        <src>/images/dummy-logo.png</src>
+    </bannerLeft>
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.6</version>
+    </skin>
+    <custom>
+        <fluidoSkin>
+            <topBarEnabled>false</topBarEnabled>
+            <sideBarEnabled>true</sideBarEnabled>
+            <topBarIcon>
+                <src>/images/dummy-logo.png</src>
+                <href>/index.html</href>
+            </topBarIcon>
+        </fluidoSkin>
+    </custom>
+    <body>
+        <menu name="Main menu">
+            <item name="section-one" href="section-one.html"/>
+            <item name="section-two" href="section-two.html"/>
+        </menu>
+        
+        <footer><![CDATA[
+            <img src="images/logo-inditex-small.png" />
+            <br/><br/>
+            Copyright @2017 <a href="www.dummy-sample-fake.com">Dummy corp</a>. All rights reserved.
+        ]]></footer>
+    </body>
+    <poweredBy>
+        <logo name="" href="" img=""/>
+    </poweredBy>
+</project>
