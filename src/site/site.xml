@@ -23,8 +23,9 @@
     </custom>
     <body>
         <menu name="Main menu">
-            <item name="section-one" href="section-one.html"/>
-            <item name="section-two" href="section-two.html"/>
+            <item name="Introduction" href="index.html"/>
+            <item name="Section one" href="section-one.html"/>
+            <item name="Section two" href="section-two.html"/>
         </menu>
         
         <footer><![CDATA[
