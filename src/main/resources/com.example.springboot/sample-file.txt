@@ -1,0 +1,5 @@
+This file is only to check if creating the archetype replace the name of the folder, by the new name of the package
+And also inside this file
+Given an artifact like sandbox
+And a package like com.example.springboot.sandbox
+With folder format like com/example/springboot/sandbox
