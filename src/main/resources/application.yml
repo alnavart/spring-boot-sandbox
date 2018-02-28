@@ -1,3 +1,5 @@
+endpoints.trace.sensitive: false
+
 agent-0: &agent-0
   device:
     type: custom
