@@ -1,14 +1,13 @@
-example.like.userAgent:
-  local: false
-  defaultSutWaitInSeconds: 5
-  agents:
-    - device:
-        type: custom
-        version: android
-      os:
-        type: ~
-        version: android
-    - device:
-        type: desktop
-        version: windows
+spring.datasource:
+  url: jdbc:h2:mem:envers_example
+  username: sa
+  password:
 
+spring.h2.console:
+  enabled: true
+  path: /h2-console
+
+# Hibernate ddl auto (create, create-drop, validate, update)
+spring.jpa:
+  hibernate.ddl-auto: create-drop
+  properties.hibernate.jdbc.lob.non_contextual_creation: true
