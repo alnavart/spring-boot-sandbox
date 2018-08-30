@@ -1,14 +1,18 @@
 package com.example.springboot.sandbox.infrastructure.repository.springdata;
 
-import com.example.springboot.sandbox.commons.Commons;
+import com.example.springboot.sandbox.infrastructure.api.rest.springmvc.RequestGeneralInfo;
+import com.example.springboot.sandbox.infrastructure.cdi.spring.ContextLookup;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.envers.RevisionListener;
 
-public class CustomerRevisionListener implements RevisionListener {
+@Log4j2
+class CustomerRevisionListener implements RevisionListener {
 
-	@Override
-	public void newRevision(Object revisionEntity) {
-		CustomerRevEntity exampleRevEntity = (CustomerRevEntity) revisionEntity;
-		exampleRevEntity.setUsername(Commons.USER.get());
-	}
+    @Override
+    public void newRevision(Object revisionEntity) {
+        CustomRevisionEntity exampleRevEntity = (CustomRevisionEntity) revisionEntity;
+        RequestGeneralInfo requestGeneralInfo = ContextLookup.requestScopeGeneralInfo();
+        exampleRevEntity.setUsername(requestGeneralInfo.getUserName());
+    }
 
 }

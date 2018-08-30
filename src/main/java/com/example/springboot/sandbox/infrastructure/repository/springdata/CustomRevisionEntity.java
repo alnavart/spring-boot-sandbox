@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 
 @Entity
 @RevisionEntity(CustomerRevisionListener.class)
-public class CustomerRevEntity extends DefaultRevisionEntity {
+public class CustomRevisionEntity extends DefaultRevisionEntity {
 
 	private String username;
 

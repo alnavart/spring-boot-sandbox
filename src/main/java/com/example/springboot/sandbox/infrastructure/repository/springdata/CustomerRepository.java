@@ -5,7 +5,7 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 import java.util.List;
 
-public interface CustomerRepository extends RevisionRepository<Customer, Long, Integer>, CrudRepository<Customer, Long> {
+public interface CustomerRepository extends RevisionRepository<Customer, Integer, Integer>, CrudRepository<Customer, Integer> {
     List<Customer> findByLastName(String lastName);
 }
 

@@ -28,7 +28,7 @@ public class CustomerRevisionAPI {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{customerId}")
 	@Transactional
-    public Revisions<Integer, Customer> listCustomerRevisions(@PathVariable Long customerId) {
+    public Revisions<Integer, Customer> listCustomerRevisions(@PathVariable Integer customerId) {
         Revisions<Integer, Customer> revisions = customerRepository.findRevisions(customerId);
         log.info(String.format("Customer revisions found %s", revisions));
         return revisions;

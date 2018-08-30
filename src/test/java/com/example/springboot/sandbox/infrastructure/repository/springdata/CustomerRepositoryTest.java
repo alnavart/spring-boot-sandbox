@@ -1,10 +1,11 @@
 package com.example.springboot.sandbox.infrastructure.repository.springdata;
 
-import com.example.springboot.sandbox.commons.Commons;
+import com.example.springboot.sandbox.infrastructure.api.rest.springmvc.RequestScopeGeneralInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.history.Revision;
 import org.springframework.data.history.Revisions;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -12,7 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -20,6 +22,8 @@ public class CustomerRepositoryTest {
 
     @Autowired
     CustomerRepository customerRepository;
+    @MockBean
+    RequestScopeGeneralInfo requestScopeGeneralInfo;
 
     @Test
     public void auditsWithEnvers() {
@@ -46,7 +50,7 @@ public class CustomerRepositoryTest {
         List<Revision<Integer, Customer>> revisions = actualRevisions.getContent();
         assertEquals(expectedRevisionsCount, revisions.size());
         for (Revision<Integer, Customer> revision : revisions) {
-            CustomerRevEntity revEntity = revision.getMetadata().getDelegate();
+            CustomRevisionEntity revEntity = revision.getMetadata().getDelegate();
             assertEquals(revEntity.getUsername(), expectedUserName);
         }
 
@@ -54,7 +58,7 @@ public class CustomerRepositoryTest {
 
     private String setUserActionsExecutor() {
         String user = String.format("testUser_%s", (new Date()).getTime());
-        Commons.USER.set(user);
+        given(this.requestScopeGeneralInfo.getUserName()).willReturn(user);
         return user;
     }
 }

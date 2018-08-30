@@ -2,21 +2,14 @@ package com.example.springboot.sandbox.infrastructure.api.rest.springmvc;
 
 import com.example.springboot.sandbox.infrastructure.repository.springdata.Customer;
 import com.example.springboot.sandbox.infrastructure.repository.springdata.CustomerRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.transaction.Transactional;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/customer")
+@RequestMapping("/api/customers")
 public class CustomerAPI {
-
-    private static final Logger log = LoggerFactory.getLogger(CustomerAPI.class);
 
     private final CustomerRepository customerRepository;
 
@@ -25,11 +18,34 @@ public class CustomerAPI {
         this.customerRepository = customerRepository;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{customerId}")
-	@Transactional
-    public Customer listCustomerRevisions(@PathVariable Long customerId) {
-        Customer customer = customerRepository.findById(customerId).orElse(null);
-        log.info(String.format("Customer found %s", customer));
-        return customer;
+    @GetMapping("/{customerId}")
+    public Customer getCustomers(@PathVariable Integer customerId) {
+        return customerRepository.findById(customerId).orElse(null);
+    }
+
+    @PostMapping
+    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer)
+    {
+        return new ResponseEntity<>(customerRepository.save(customer), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public Customer updateCustomer(@RequestBody Customer newCustomer, @PathVariable Integer id) {
+
+        return customerRepository.findById(id)
+                .map(customer -> {
+                    customer.setFirstName(newCustomer.getFirstName());
+                    customer.setLastName(newCustomer.getLastName());
+                    return customerRepository.save(customer);
+                })
+                .orElseGet(() -> {
+                    newCustomer.setId(id);
+                    return customerRepository.save(newCustomer);
+                });
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCustomer(@PathVariable Integer id) {
+        customerRepository.deleteById(id);
     }
 }
