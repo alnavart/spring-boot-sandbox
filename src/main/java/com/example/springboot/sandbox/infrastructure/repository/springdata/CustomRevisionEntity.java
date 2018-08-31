@@ -6,7 +6,7 @@ import org.hibernate.envers.RevisionEntity;
 import javax.persistence.Entity;
 
 @Entity
-@RevisionEntity(CustomerRevisionListener.class)
+@RevisionEntity(CustomRevisionListener.class)
 class CustomRevisionEntity extends DefaultRevisionEntity {
 
 	private String username;

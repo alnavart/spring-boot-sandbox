@@ -16,10 +16,10 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CustomerRepositoryTest {
+public class BookRepositoryTest {
 
     @Autowired
-    CustomerRepository customerRepository;
+    BookRepository bookRepository;
     @MockBean
     RequestScopeGeneralInfo requestScopeGeneralInfo;
 
@@ -27,31 +27,27 @@ public class CustomerRepositoryTest {
 
     @Before
     public void setUp() {
-        customerRevisionAssertions = new CustomerRevisionAssertions(customerRepository);
+        customerRevisionAssertions = new CustomerRevisionAssertions(bookRepository);
     }
 
     @Test
     public void auditsWithEnvers() {
         String userName = setUserActionsExecutor();
-        Customer bauaer = customerRepository.save(CustomerFixtureFactory.jack());
-        Customer brian = customerRepository.save(CustomerFixtureFactory.chloe());
-        Customer kim = customerRepository.save(CustomerFixtureFactory.kim());
-        Customer palmer = customerRepository.save(CustomerFixtureFactory.david());
-        Customer michelle = customerRepository.save(CustomerFixtureFactory.michelle());
+        Book aBook = bookRepository.save(BookFixtureFactory.aRandomBook());
+        Book otherBook = bookRepository.save(BookFixtureFactory.aRandomBook());
+        Book anotherBook = bookRepository.save(BookFixtureFactory.aRandomBook());
 
-        bauaer.setLastName("Bauer 2");
-        customerRepository.save(bauaer);
+        aBook.setAuthor("Ana Rosa");
+        bookRepository.save(aBook);
 
-        assertEquals(5L, customerRepository.count());
-        assertRevisions(bauaer, userName, 2);
-        assertRevisions(brian, userName, 1);
-        assertRevisions(kim, userName, 1);
-        assertRevisions(palmer, userName, 1);
-        assertRevisions(michelle, userName, 1);
+        assertEquals(3L, bookRepository.count());
+        assertRevisions(aBook, userName, 2);
+        assertRevisions(otherBook, userName, 1);
+        assertRevisions(anotherBook, userName, 1);
     }
 
-    private void assertRevisions(Customer customer, String expectedUserName, int expectedRevisionsCount) {
-        customerRevisionAssertions.assertRevisions(customer.getId(), expectedUserName, expectedRevisionsCount);
+    private void assertRevisions(Book book, String expectedUserName, int expectedRevisionsCount) {
+        customerRevisionAssertions.assertRevisions(book.getId(), expectedUserName, expectedRevisionsCount);
     }
 
     private String setUserActionsExecutor() {

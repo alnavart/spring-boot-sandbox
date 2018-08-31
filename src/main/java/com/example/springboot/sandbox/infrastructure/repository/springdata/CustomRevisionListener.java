@@ -6,7 +6,7 @@ import lombok.extern.log4j.Log4j2;
 import org.hibernate.envers.RevisionListener;
 
 @Log4j2
-class CustomerRevisionListener implements RevisionListener {
+class CustomRevisionListener implements RevisionListener {
 
     @Override
     public void newRevision(Object revisionEntity) {

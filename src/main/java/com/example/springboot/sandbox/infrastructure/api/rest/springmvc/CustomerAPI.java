@@ -18,9 +18,9 @@ public class CustomerAPI {
         this.customerRepository = customerRepository;
     }
 
-    @GetMapping("/{customerId}")
-    public Customer getCustomers(@PathVariable Integer customerId) {
-        return customerRepository.findById(customerId).orElse(null);
+    @GetMapping("/{id}")
+    public Customer getCustomers(@PathVariable Integer id) {
+        return customerRepository.findById(id).orElse(null);
     }
 
     @PostMapping

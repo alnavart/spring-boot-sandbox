@@ -1,4 +1,4 @@
-package com.example.springboot.sandbox;
+package com.example.springboot.sandbox.endtoend;
 
 
 import com.example.springboot.sandbox.infrastructure.repository.springdata.Customer;
@@ -88,7 +88,7 @@ public class ConcurrencyTest {
     }
 
     private void assertRevisions(Customer customer, String expectedUserName, int expectedRevisionsCount) {
-        customerRevisionAssertions.assertRevisions(customer, expectedUserName, expectedRevisionsCount);
+        customerRevisionAssertions.assertRevisions(customer.getId(), expectedUserName, expectedRevisionsCount);
     }
 
     private CustomerCreation randomCustomerCreation() {

@@ -1,4 +1,4 @@
-package com.example.springboot.sandbox;
+package com.example.springboot.sandbox.integration;
 
 
 import com.example.springboot.sandbox.infrastructure.repository.springdata.Customer;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class EndToEndApiTest {
+public class CustomerApiIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

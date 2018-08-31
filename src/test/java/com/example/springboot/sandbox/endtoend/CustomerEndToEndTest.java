@@ -1,4 +1,4 @@
-package com.example.springboot.sandbox;
+package com.example.springboot.sandbox.endtoend;
 
 
 import com.example.springboot.sandbox.infrastructure.repository.springdata.Customer;
@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThat;
 @Log4j2
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SandboxApplicationTest {
+public class CustomerEndToEndTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -88,7 +88,7 @@ public class SandboxApplicationTest {
     }
 
     private void assertRevisions(Customer customer, String expectedUserName, int expectedRevisionsCount) {
-        customerRevisionAssertions.assertRevisions(customer, expectedUserName, expectedRevisionsCount);
+        customerRevisionAssertions.assertRevisions(customer.getId(), expectedUserName, expectedRevisionsCount);
     }
 
     private HttpHeaders userNameHeaders(String userName) {
