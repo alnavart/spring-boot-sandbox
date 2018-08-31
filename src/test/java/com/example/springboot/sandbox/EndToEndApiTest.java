@@ -2,6 +2,7 @@ package com.example.springboot.sandbox;
 
 
 import com.example.springboot.sandbox.infrastructure.repository.springdata.Customer;
+import com.example.springboot.sandbox.infrastructure.repository.springdata.CustomerFixtureFactory;
 import com.example.springboot.sandbox.infrastructure.repository.springdata.CustomerRepository;
 import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j2;
@@ -38,12 +39,13 @@ public class EndToEndApiTest {
     private final String userName = "alnavart";
     private Customer bauaer;
     private Customer brian;
-    private Customer kim = new Customer("Kim", "Bauer");
+    private Customer kim;
 
     @Before
     public void setUp() {
-        bauaer = customerRepository.save(new Customer("Jack", "Bauer"));
-        brian = customerRepository.save(new Customer("Chloe", "O'Brian"));
+        kim = CustomerFixtureFactory.kim();
+        bauaer = customerRepository.save(CustomerFixtureFactory.jack());
+        brian = customerRepository.save(CustomerFixtureFactory.chloe());
     }
 
     @Test

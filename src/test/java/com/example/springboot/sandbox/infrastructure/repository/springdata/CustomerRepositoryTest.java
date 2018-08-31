@@ -28,11 +28,11 @@ public class CustomerRepositoryTest {
     @Test
     public void auditsWithEnvers() {
         String userName = setUserActionsExecutor();
-        Customer bauaer = customerRepository.save(new Customer("Jack", "Bauer"));
-        Customer brian = customerRepository.save(new Customer("Chloe", "O'Brian"));
-        Customer kim = customerRepository.save(new Customer("Kim", "Bauer"));
-        Customer palmer = customerRepository.save(new Customer("David", "Palmer"));
-        Customer michelle = customerRepository.save(new Customer("Michelle", "Dessler"));
+        Customer bauaer = customerRepository.save(CustomerFixtureFactory.jack());
+        Customer brian = customerRepository.save(CustomerFixtureFactory.chloe());
+        Customer kim = customerRepository.save(CustomerFixtureFactory.kim());
+        Customer palmer = customerRepository.save(CustomerFixtureFactory.david());
+        Customer michelle = customerRepository.save(CustomerFixtureFactory.michelle());
 
         bauaer.setLastName("Bauer 2");
         customerRepository.save(bauaer);
