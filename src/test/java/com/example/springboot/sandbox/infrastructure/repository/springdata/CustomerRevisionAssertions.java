@@ -23,6 +23,7 @@ public class CustomerRevisionAssertions {
     }
 
     public void assertRevisions(Object objectId, String expectedUserName, int expectedRevisionsCount) {
+        @SuppressWarnings("unchecked")  //Be careful, type for id is not checked
         Revisions<Integer, Customer> actualRevisions = customerRepository.findRevisions(objectId);
         log.info(String.format("Revisions for id %s : %s", objectId, gson.toJson(actualRevisions)));
         List<Revision<Integer, Customer>> revisions = actualRevisions.getContent();

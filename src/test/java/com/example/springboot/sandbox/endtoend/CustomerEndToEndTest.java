@@ -15,6 +15,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Objects;
+
 import static com.example.springboot.sandbox.infrastructure.api.rest.springmvc.RequestScopeGeneralInfo.USERNAME_HEADER_LABEL;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -60,7 +62,7 @@ public class CustomerEndToEndTest {
         ResponseEntity<Customer> response = restTemplate.exchange("/api/customers", HttpMethod.POST,
                 new HttpEntity<>(kim, httpHeaders), Customer.class);
         Customer savedKim = response.getBody();
-        kim.setId(savedKim.getId());
+        kim.setId(Objects.requireNonNull(savedKim).getId());
 
         assertThat(response.getStatusCode(), equalTo(HttpStatus.CREATED));
         assertThat(savedKim, equalTo(kim));
@@ -75,7 +77,7 @@ public class CustomerEndToEndTest {
         ResponseEntity<Customer> postResponse = restTemplate.exchange("/api/customers", HttpMethod.POST,
                 new HttpEntity<>(kim, httpHeaders), Customer.class);
         Customer savedKim = postResponse.getBody();
-        kim.setId(savedKim.getId());
+        kim.setId(Objects.requireNonNull(savedKim).getId());
         kim.setFirstName("Manolo");
         ResponseEntity<Customer> putResponse = restTemplate.exchange(String.format("/api/customers/%s", kim.getId()),
                 HttpMethod.PUT, new HttpEntity<>(kim, httpHeaders), Customer.class);
