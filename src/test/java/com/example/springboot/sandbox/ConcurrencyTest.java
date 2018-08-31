@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import static com.example.springboot.sandbox.infrastructure.api.rest.springmvc.RequestScopeGeneralInfo.USERNAME_HEADER_LABEL;
@@ -36,14 +35,13 @@ import static java.util.stream.Collectors.toList;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ConcurrencyTest {
 
+    private static final List<String> usernames = asList("alnavart", "paco", "alf", "ralf", "chimo");
+
     @Autowired
     private TestRestTemplate restTemplate;
     @Autowired
     private CustomerRepository customerRepository;
 
-    private final String aUserName = "alnavart";
-    private final String userNamePaco = "paco";
-    private final String userNameAlf = "alf";
     private CustomerRevisionAssertions customerRevisionAssertions;
 
     @Before
@@ -71,14 +69,7 @@ public class ConcurrencyTest {
     }
 
     private CompletableFuture<CustomerCreation> postAsync(CustomerCreation customerCreation) {
-        CompletableFuture<CustomerCreation> future = CompletableFuture.supplyAsync(new Supplier<CustomerCreation>() {
-            @Override
-            public CustomerCreation get() {
-                return post(customerCreation);
-            }
-        });
-
-        return future;
+        return CompletableFuture.supplyAsync(() -> post(customerCreation));
     }
 
     private CustomerCreation post(CustomerCreation customerCreation) {
@@ -105,7 +96,6 @@ public class ConcurrencyTest {
     }
 
     private String randomCreator() {
-        List<String> usernames = asList(aUserName, userNamePaco, userNameAlf);
         Random randomizer = new Random();
         return usernames.get(randomizer.nextInt(usernames.size()));
     }

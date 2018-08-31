@@ -6,7 +6,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class CustomerFixtureFactory {
 
-    public static final int RANDOM_STRING_LENGHT = 12;
+    private static final int RANDOM_STRING_LENGHT = 12;
 
     public static Customer kim() {
         return new Customer("Kim", "Bauer");
