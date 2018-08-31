@@ -1,17 +1,15 @@
 package com.example.springboot.sandbox.infrastructure.repository.springdata;
 
 import com.example.springboot.sandbox.infrastructure.api.rest.springmvc.RequestScopeGeneralInfo;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.history.Revision;
-import org.springframework.data.history.Revisions;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -24,6 +22,13 @@ public class CustomerRepositoryTest {
     CustomerRepository customerRepository;
     @MockBean
     RequestScopeGeneralInfo requestScopeGeneralInfo;
+
+    private CustomerRevisionAssertions customerRevisionAssertions;
+
+    @Before
+    public void setUp() {
+        customerRevisionAssertions = new CustomerRevisionAssertions(customerRepository);
+    }
 
     @Test
     public void auditsWithEnvers() {
@@ -46,14 +51,7 @@ public class CustomerRepositoryTest {
     }
 
     private void assertRevisions(Customer customer, String expectedUserName, int expectedRevisionsCount) {
-        Revisions<Integer, Customer> actualRevisions = customerRepository.findRevisions(customer.getId());
-        List<Revision<Integer, Customer>> revisions = actualRevisions.getContent();
-        assertEquals(expectedRevisionsCount, revisions.size());
-        for (Revision<Integer, Customer> revision : revisions) {
-            CustomRevisionEntity revEntity = revision.getMetadata().getDelegate();
-            assertEquals(revEntity.getUsername(), expectedUserName);
-        }
-
+        customerRevisionAssertions.assertRevisions(customer, expectedUserName, expectedRevisionsCount);
     }
 
     private String setUserActionsExecutor() {

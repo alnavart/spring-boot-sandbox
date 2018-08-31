@@ -1,11 +1,10 @@
 package com.example.springboot.sandbox;
 
 
-import com.example.springboot.sandbox.infrastructure.repository.springdata.CustomRevisionEntity;
 import com.example.springboot.sandbox.infrastructure.repository.springdata.Customer;
 import com.example.springboot.sandbox.infrastructure.repository.springdata.CustomerFixtureFactory;
 import com.example.springboot.sandbox.infrastructure.repository.springdata.CustomerRepository;
-import com.google.gson.Gson;
+import com.example.springboot.sandbox.infrastructure.repository.springdata.CustomerRevisionAssertions;
 import lombok.extern.log4j.Log4j2;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,16 +12,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.data.history.Revision;
-import org.springframework.data.history.Revisions;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-
 import static com.example.springboot.sandbox.infrastructure.api.rest.springmvc.RequestScopeGeneralInfo.USERNAME_HEADER_LABEL;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 @Log4j2
@@ -34,16 +28,17 @@ public class SandboxApplicationTest {
     private TestRestTemplate restTemplate;
     @Autowired
     private CustomerRepository customerRepository;
-    private final Gson gson = new Gson();
 
-    private final String userName = "alnavart";
+    private final String aUserName = "alnavart";
     private final String noUserName = "";
+    private CustomerRevisionAssertions customerRevisionAssertions;
     private Customer bauaer;
     private Customer brian;
     private Customer kim;
 
     @Before
     public void setUp() {
+        customerRevisionAssertions = new CustomerRevisionAssertions(customerRepository);
         kim = CustomerFixtureFactory.kim();
         bauaer = customerRepository.save(CustomerFixtureFactory.jack());
         brian = customerRepository.save(CustomerFixtureFactory.chloe());
@@ -61,9 +56,9 @@ public class SandboxApplicationTest {
 
     @Test
     public void postsCustomer() {
-        HttpHeaders httpHeaders = userNameHeaders(userName);
+        HttpHeaders httpHeaders = userNameHeaders(aUserName);
         ResponseEntity<Customer> response = restTemplate.exchange("/api/customers", HttpMethod.POST,
-                new HttpEntity<>( kim, httpHeaders), Customer.class);
+                new HttpEntity<>(kim, httpHeaders), Customer.class);
         Customer savedKim = response.getBody();
         kim.setId(savedKim.getId());
 
@@ -71,25 +66,29 @@ public class SandboxApplicationTest {
         assertThat(savedKim, equalTo(kim));
         assertRevisions(bauaer, noUserName, 1);
         assertRevisions(brian, noUserName, 1);
-        assertRevisions(savedKim, userName, 1);
+        assertRevisions(savedKim, aUserName, 1);
     }
 
     @Test
     public void putsCustomer() {
-        HttpHeaders httpHeaders = userNameHeaders(userName);
+        HttpHeaders httpHeaders = userNameHeaders(aUserName);
         ResponseEntity<Customer> postResponse = restTemplate.exchange("/api/customers", HttpMethod.POST,
-                new HttpEntity<>( kim, httpHeaders), Customer.class);
+                new HttpEntity<>(kim, httpHeaders), Customer.class);
         Customer savedKim = postResponse.getBody();
         kim.setId(savedKim.getId());
         kim.setFirstName("Manolo");
         ResponseEntity<Customer> putResponse = restTemplate.exchange(String.format("/api/customers/%s", kim.getId()),
-                HttpMethod.PUT, new HttpEntity<>( kim, httpHeaders), Customer.class);
+                HttpMethod.PUT, new HttpEntity<>(kim, httpHeaders), Customer.class);
 
         assertThat(putResponse.getStatusCode(), equalTo(HttpStatus.OK));
         assertThat(putResponse.getBody(), equalTo(kim));
         assertRevisions(bauaer, noUserName, 1);
         assertRevisions(brian, noUserName, 1);
-        assertRevisions(savedKim, userName, 2);
+        assertRevisions(savedKim, aUserName, 2);
+    }
+
+    private void assertRevisions(Customer customer, String expectedUserName, int expectedRevisionsCount) {
+        customerRevisionAssertions.assertRevisions(customer, expectedUserName, expectedRevisionsCount);
     }
 
     private HttpHeaders userNameHeaders(String userName) {
@@ -97,17 +96,4 @@ public class SandboxApplicationTest {
         httpHeaders.add(USERNAME_HEADER_LABEL, userName);
         return httpHeaders;
     }
-
-    private void assertRevisions(Customer customer, String expectedUserName, int expectedRevisionsCount) {
-        Revisions<Integer, Customer> actualRevisions = customerRepository.findRevisions(customer.getId());
-        log.info(String.format("Revisions for %s : %s", customer, gson.toJson(actualRevisions)));
-        List<Revision<Integer, Customer>> revisions = actualRevisions.getContent();
-        assertEquals(expectedRevisionsCount, revisions.size());
-        for (Revision<Integer, Customer> revision : revisions) {
-            CustomRevisionEntity revEntity = revision.getMetadata().getDelegate();
-            assertEquals(revEntity.getUsername(), expectedUserName);
-        }
-
-    }
-
 }
