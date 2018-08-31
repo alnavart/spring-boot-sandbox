@@ -12,12 +12,12 @@ import static org.junit.Assert.assertEquals;
 
 
 @Log4j2
-public class CustomerRevisionAssertions {
+public class RevisionAssertions {
 
     private final RevisionRepository customerRepository;
     private final Gson gson;
 
-    public CustomerRevisionAssertions(RevisionRepository customerRepository) {
+    public RevisionAssertions(RevisionRepository customerRepository) {
         this.customerRepository = customerRepository;
         this.gson = new Gson();
     }
@@ -30,7 +30,7 @@ public class CustomerRevisionAssertions {
         assertEquals(expectedRevisionsCount, revisions.size());
         for (Revision<Integer, Customer> revision : revisions) {
             CustomRevisionEntity revEntity = revision.getMetadata().getDelegate();
-            assertEquals(revEntity.getUsername(), expectedUserName);
+            assertEquals(expectedUserName, revEntity.getUsername());
         }
 
     }

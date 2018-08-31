@@ -3,7 +3,7 @@ package com.example.springboot.sandbox.endtoend;
 
 import com.example.springboot.sandbox.infrastructure.repository.springdata.Customer;
 import com.example.springboot.sandbox.infrastructure.repository.springdata.CustomerRepository;
-import com.example.springboot.sandbox.infrastructure.repository.springdata.CustomerRevisionAssertions;
+import com.example.springboot.sandbox.infrastructure.repository.springdata.RevisionAssertions;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
@@ -42,11 +42,11 @@ public class ConcurrencyTest {
     @Autowired
     private CustomerRepository customerRepository;
 
-    private CustomerRevisionAssertions customerRevisionAssertions;
+    private RevisionAssertions revisionAssertions;
 
     @Before
     public void setUp() {
-        customerRevisionAssertions = new CustomerRevisionAssertions(customerRepository);
+        revisionAssertions = new RevisionAssertions(customerRepository);
     }
 
     @Test
@@ -88,7 +88,7 @@ public class ConcurrencyTest {
     }
 
     private void assertRevisions(Customer customer, String expectedUserName, int expectedRevisionsCount) {
-        customerRevisionAssertions.assertRevisions(customer.getId(), expectedUserName, expectedRevisionsCount);
+        revisionAssertions.assertRevisions(customer.getId(), expectedUserName, expectedRevisionsCount);
     }
 
     private CustomerCreation randomCustomerCreation() {

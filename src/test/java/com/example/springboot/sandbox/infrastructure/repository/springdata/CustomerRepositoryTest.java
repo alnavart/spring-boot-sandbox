@@ -23,11 +23,11 @@ public class CustomerRepositoryTest {
     @MockBean
     RequestScopeGeneralInfo requestScopeGeneralInfo;
 
-    private CustomerRevisionAssertions customerRevisionAssertions;
+    private RevisionAssertions revisionAssertions;
 
     @Before
     public void setUp() {
-        customerRevisionAssertions = new CustomerRevisionAssertions(customerRepository);
+        revisionAssertions = new RevisionAssertions(customerRepository);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class CustomerRepositoryTest {
     }
 
     private void assertRevisions(Customer customer, String expectedUserName, int expectedRevisionsCount) {
-        customerRevisionAssertions.assertRevisions(customer.getId(), expectedUserName, expectedRevisionsCount);
+        revisionAssertions.assertRevisions(customer.getId(), expectedUserName, expectedRevisionsCount);
     }
 
     private String setUserActionsExecutor() {

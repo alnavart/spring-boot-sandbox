@@ -4,7 +4,7 @@ package com.example.springboot.sandbox.endtoend;
 import com.example.springboot.sandbox.infrastructure.repository.springdata.Customer;
 import com.example.springboot.sandbox.infrastructure.repository.springdata.CustomerFixtureFactory;
 import com.example.springboot.sandbox.infrastructure.repository.springdata.CustomerRepository;
-import com.example.springboot.sandbox.infrastructure.repository.springdata.CustomerRevisionAssertions;
+import com.example.springboot.sandbox.infrastructure.repository.springdata.RevisionAssertions;
 import lombok.extern.log4j.Log4j2;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,14 +33,14 @@ public class CustomerEndToEndTest {
 
     private final String aUserName = "alnavart";
     private final String noUserName = "";
-    private CustomerRevisionAssertions customerRevisionAssertions;
+    private RevisionAssertions revisionAssertions;
     private Customer bauaer;
     private Customer brian;
     private Customer kim;
 
     @Before
     public void setUp() {
-        customerRevisionAssertions = new CustomerRevisionAssertions(customerRepository);
+        revisionAssertions = new RevisionAssertions(customerRepository);
         kim = CustomerFixtureFactory.kim();
         bauaer = customerRepository.save(CustomerFixtureFactory.jack());
         brian = customerRepository.save(CustomerFixtureFactory.chloe());
@@ -90,7 +90,7 @@ public class CustomerEndToEndTest {
     }
 
     private void assertRevisions(Customer customer, String expectedUserName, int expectedRevisionsCount) {
-        customerRevisionAssertions.assertRevisions(customer.getId(), expectedUserName, expectedRevisionsCount);
+        revisionAssertions.assertRevisions(customer.getId(), expectedUserName, expectedRevisionsCount);
     }
 
     private HttpHeaders userNameHeaders(String userName) {
